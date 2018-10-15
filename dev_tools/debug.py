@@ -13,17 +13,25 @@ ic_log_to_file = os.environ.get('IC_LOG_TO_FILE')
 # -----------------------------------------------
 
 
+class File_Writer:
+    def __init__(self, file):
+        self.file = Path(file).open('w')
+
+    def write(self, thing):
+        self.file.write(thing + '\n')
+
+
 def file_logger_factory(file, name):
     """Create a logger that writes to a file
     """
 
     logger = logging.getLogger(name)
-    handler = logging.FileHandler(debug_log_file,mode='w')
+    handler = logging.FileHandler(debug_log_file, mode='w')
     formatter = logging.Formatter('%(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.setLevel(logging.INFO)
-    logger.propagate=False
+    logger.propagate = False
     return logger
 
 
@@ -39,30 +47,16 @@ def arguments():
     return args, posargs
 
 
-
 def status():
     fargs = arguments()
-    log(fargs['args'])
-    log(fargs['kwargs'])
+    print(fargs['args'])
+    print(fargs['kwargs'])
 
-# -------------------------logger----------------------
-
-
-debug_logger = file_logger_factory(debug_log_file, debug_logger_name)
-
-def log(s=''):
-    """shortcut to logger"""
-    debug_logger.info(s)
-
-
-# -----------------------IC------------------------
+# ---------------setup IC--------------
 
 
 ic_config = {'prefix': ''}
-
 if ic_log_to_file:
-    ic_config.update({'outputFunction': log})
-
+    writer = File_Writer(debug_log_file)
+    ic_config.update({'outputFunction': writer.write})
 ic.configureOutput(**ic_config)
-
-

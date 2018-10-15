@@ -20,6 +20,7 @@ class Object_Viewer:
     def view(self):
         self.print_title()
         attributes = self.get_attributes()
+        self.set_column_width(attributes)
         groups = self.group_attributes(attributes)
         for group in groups:
             self.view_group(group)
@@ -56,6 +57,10 @@ class Object_Viewer:
 
     # -------------------printers-----------------------
 
+    def set_column_width(self,attributes):
+        self.first_column_width=max([len(name) for name in attributes])
+
+
     def print_title(self):
         self.print(f'type : {type(self.o)}')
 
@@ -67,10 +72,11 @@ class Object_Viewer:
         try:
            attr = getattr(self.o, a)
         except AttributeError:
-            print(f'{a} : ...')
+            print(f'{a:{self.first_column_width}} : ...')
             return
         if callable(attr):
-            self.print(f'{a}() : {doc_header(attr)}')
+            formatted=f'{a}()'
+            self.print(f'{formatted:{self.first_column_width}} : {doc_header(attr)}')
         else:
             type_=type(attr)
             base_types=[int,bool,type(None),dict,frozenset,str,list,tuple]
@@ -81,7 +87,7 @@ class Object_Viewer:
             attr_str=str(attr)
             if len(attr_str)>40:
                 attr_str=f'{attr_str[:20]}...      ({len(attr_str)})'
-            self.print(f'{a} : {attr_str} {type_info}')
+            self.print(f'{a:{self.first_column_width}} : {attr_str} {type_info}')
 
 
 import logging

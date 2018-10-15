@@ -3,7 +3,6 @@ from os.path import isfile
 import pickle
 import json
 from pathlib import Path
-import dictdiffer
 from pprint import pprint
 
 # ---------------------pickle---------------------
