@@ -1,6 +1,10 @@
+import logging
 from collections import namedtuple
-Attribute_Group = namedtuple('Attribute_Group', ['attributes', 'name'])
 from inspect import ismodule
+
+from sqlalchemy import inspect
+
+Attribute_Group = namedtuple('Attribute_Group', ['attributes', 'name'])
 
 
 def doc_header(o):
@@ -11,11 +15,9 @@ def doc_header(o):
 
 
 class Object_Viewer:
-
-    def __init__(self, o,printer=print):
+    def __init__(self, o, printer=print):
         self.o = o
-        self.print=printer
-
+        self.print = printer
 
     def view(self):
         self.print_title()
@@ -35,14 +37,14 @@ class Object_Viewer:
         properties = Attribute_Group(attributes=[], name='properties')
         modules = Attribute_Group(attributes=[], name='modules')
         for a in attributes:
-            value=getattr(self.o, a,None)
+            value = getattr(self.o, a, None)
             if callable(value):
                 callables.attributes.append(a)
             elif ismodule(value):
                 modules.attributes.append(a)
             else:
                 properties.attributes.append(a)
-        return [modules,properties,callables]
+        return [modules, properties, callables]
 
     def view_group(self, group):
         if not group.attributes:
@@ -54,12 +56,10 @@ class Object_Viewer:
     def is_viewed(self, a):
         return not a[0] == '_'
 
-
     # -------------------printers-----------------------
 
-    def set_column_width(self,attributes):
-        self.first_column_width=max([len(name) for name in attributes])
-
+    def set_column_width(self, attributes):
+        self.first_column_width = max([len(name) for name in attributes])
 
     def print_title(self):
         self.print(f'type : {type(self.o)}')
@@ -70,27 +70,25 @@ class Object_Viewer:
 
     def print_attribute(self, a):
         try:
-           attr = getattr(self.o, a)
+            attr = getattr(self.o, a)
         except AttributeError:
             print(f'{a:{self.first_column_width}} : ...')
             return
         if callable(attr):
-            formatted=f'{a}()'
+            formatted = f'{a}()'
             self.print(f'{formatted:{self.first_column_width}} : {doc_header(attr)}')
         else:
-            type_=type(attr)
-            base_types=[int,bool,type(None),dict,frozenset,str,list,tuple]
+            type_ = type(attr)
+            base_types = [int, bool, type(None), dict, frozenset, str, list, tuple]
             if type_ in base_types:
-                type_info=''
+                type_info = ''
             else:
-                type_info=type_
-            attr_str=str(attr)
-            if len(attr_str)>40:
-                attr_str=f'{attr_str[:20]}...      ({len(attr_str)})'
+                type_info = type_
+            attr_str = str(attr)
+            if len(attr_str) > 40:
+                attr_str = f'{attr_str[:20]}...      ({len(attr_str)})'
             self.print(f'{a:{self.first_column_width}} : {attr_str} {type_info}')
 
-
-import logging
 
 def format_logger(l):
     info = []
@@ -103,9 +101,9 @@ def format_logger(l):
         info.append(f'handler : {handler.__class__.__name__}')
     return '\n'.join(info)
 
-from sqlalchemy import inspect
+
 def view_model(model):
-    mapper=inspect(model)
+    mapper = inspect(model)
     print(mapper.class_)
     print()
     print('---| relationships')
@@ -116,12 +114,13 @@ def view_model(model):
     for p in mapper.column_attrs:
         print(f'{p.key}')
 
+
 # -----------------------------------------------
 
 
-def view(o,**kwargs):
-    if isinstance(o,logging.Logger):
+def view(o, **kwargs):
+    if isinstance(o, logging.Logger):
         print(format_logger(o))
     else:
-        viewer = Object_Viewer(o,**kwargs)
+        viewer = Object_Viewer(o, **kwargs)
         viewer.view()

@@ -1,3 +1,6 @@
+"""Classes to filter dictionaries
+"""
+
 from pprint import pformat
 
 
@@ -9,6 +12,7 @@ class Filter_Equal:
     def __call__(self, d):
         return d[self.key] == self.value
 
+
 class Filter_Keys:
     def __init__(self, keys):
         self.keys = keys
@@ -18,7 +22,6 @@ class Filter_Keys:
 
 
 class Query(dict):
-
     def filter_keys(self, keys):
         """Select a subset of items
 
@@ -59,7 +62,7 @@ class Query(dict):
 
         path : list of keys
         """
-        obj=self
+        obj = self
         for key in path:
-            obj=obj[key]
+            obj = obj[key]
         return Query(obj)

@@ -1,23 +1,27 @@
 import logging
 import os
-from pathlib import Path
+from pprint import pformat, pprint
+
 from icecream import ic
-from pprint import pprint,pformat
+from pathlib import Path
+
 
 # -----------------------------------------------
 
 
-
 def unbuffered_file(filename):
-    return Path(filename).open("w",buffering=1)
+    return Path(filename).open("w", buffering=1)
+
 
 class File_Writer:
     def __init__(self, filename):
+        # unbuffered file allows real time following the file
         self.file = unbuffered_file(filename)
 
     def write(self, thing):
-        self.file.write(thing + "\n")
+        """write a line to the file"""
 
+        self.file.write(thing + "\n")
 
 
 def file_logger_factory(file, name):
@@ -56,8 +60,10 @@ def status():
 
 def print_factory(file):
     def print_to(s):
-        print(pformat(s),flush=True, file=file)
+        print(pformat(s), flush=True, file=file)
+
     return print_to
+
 
 def print_at_level(s, n):
     print(n * "\t", end="")
@@ -65,29 +71,28 @@ def print_at_level(s, n):
 
 
 class Printer:
-
     def __init__(self):
-        self._indent=0
+        self._indent = 0
 
-    def __call__(self,s):
+    def __call__(self, s):
         self.print(s)
 
-    def indent(self,n=None):
+    def indent(self, n=None):
         if n is None:
-            self._indent+=1
+            self._indent += 1
         else:
-            self._indent+=n
+            self._indent += n
 
     def dedent(self):
-        self._indent=max(self._indent - 1,0)
+        self._indent = max(self._indent - 1, 0)
 
     def reset_indent(self):
-        self._indent=0
+        self._indent = 0
 
-    def print(self,s,prefix=None):
+    def print(self, s, prefix=None):
         prefix = prefix or ''
         print(f'{" "*4*self._indent}{prefix}{str(s)}')
 
-    def iter(self,iterable,**kwargs):
+    def iter(self, iterable, **kwargs):
         for i in iterable:
-            self.print(i,**kwargs)
+            self.print(i, **kwargs)

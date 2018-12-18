@@ -1,9 +1,10 @@
 import os
+
+# all those imports allows `from dev_tools import *` and have a lot of things in
+# the namespace to quick debug
 from pdb import set_trace as bp  # noqa
 from pprint import pformat as pf  # noqa
 from pprint import pprint as ppr  # noqa
-
-from tests.db_inspection import *  # noqa
 
 from .clock import monitor_run  # noqa
 from .debug import print_factory  # noqa; noqa

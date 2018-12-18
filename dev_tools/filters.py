@@ -1,3 +1,6 @@
+"""Utils for creating unix filter programs
+"""
+
 import fileinput
 import re
 
