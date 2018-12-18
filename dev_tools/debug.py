@@ -2,33 +2,33 @@ import logging
 import os
 from pathlib import Path
 from icecream import ic
-
-
-# logger that prints to a file
-
-debug_logger_name = 'debug'
-debug_log_file = os.environ.get('DEBUG_LOG_FILE')
-ic_log_to_file = os.environ.get('IC_LOG_TO_FILE')
+from pprint import pprint,pformat
 
 # -----------------------------------------------
 
 
+
+def unbuffered_file(filename):
+    return Path(filename).open("w",buffering=1)
+
 class File_Writer:
-    def __init__(self, file):
-        self.file = Path(file).open('w')
+    def __init__(self, filename):
+        self.file = unbuffered_file(filename)
 
     def write(self, thing):
-        self.file.write(thing + '\n')
+        self.file.write(thing + "\n")
+
 
 
 def file_logger_factory(file, name):
     """Create a logger that writes to a file
     """
+    formatter = logging.Formatter("%(message)s")
+
+    handler = logging.FileHandler(file, mode="w")
+    handler.setFormatter(formatter)
 
     logger = logging.getLogger(name)
-    handler = logging.FileHandler(debug_log_file, mode='w')
-    formatter = logging.Formatter('%(message)s')
-    handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.setLevel(logging.INFO)
     logger.propagate = False
@@ -41,6 +41,7 @@ def arguments():
        positional arguments.
     """
     from inspect import getargvalues, stack
+
     posname, kwname, args = getargvalues(stack()[1][0])[-3:]
     posargs = args.pop(posname, [])
     args.update(args.pop(kwname, []))
@@ -49,14 +50,44 @@ def arguments():
 
 def status():
     fargs = arguments()
-    print(fargs['args'])
-    print(fargs['kwargs'])
-
-# ---------------setup IC--------------
+    print(fargs["args"])
+    print(fargs["kwargs"])
 
 
-ic_config = {'prefix': ''}
-if ic_log_to_file:
-    writer = File_Writer(debug_log_file)
-    ic_config.update({'outputFunction': writer.write})
-ic.configureOutput(**ic_config)
+def print_factory(file):
+    def print_to(s):
+        print(pformat(s),flush=True, file=file)
+    return print_to
+
+def print_at_level(s, n):
+    print(n * "\t", end="")
+    print(s)
+
+
+class Printer:
+
+    def __init__(self):
+        self._indent=0
+
+    def __call__(self,s):
+        self.print(s)
+
+    def indent(self,n=None):
+        if n is None:
+            self._indent+=1
+        else:
+            self._indent+=n
+
+    def dedent(self):
+        self._indent=max(self._indent - 1,0)
+
+    def reset_indent(self):
+        self._indent=0
+
+    def print(self,s,prefix=None):
+        prefix = prefix or ''
+        print(f'{" "*4*self._indent}{prefix}{str(s)}')
+
+    def iter(self,iterable,**kwargs):
+        for i in iterable:
+            self.print(i,**kwargs)
