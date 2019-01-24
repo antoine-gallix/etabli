@@ -59,10 +59,18 @@ def status():
 
 
 def print_factory(file):
-    def print_to(s):
-        print(pformat(s), flush=True, file=file)
+    "Create functions that print to a file"
 
-    return print_to
+    def print_to_file(s=None):
+        if s is None:
+            to_print = ''
+        elif isinstance(s, str):
+            to_print = s
+        else:
+            to_print = pformat(s)
+        print(to_print, flush=True, file=file)
+
+    return print_to_file
 
 
 def print_at_level(s, n):

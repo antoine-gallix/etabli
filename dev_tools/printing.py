@@ -1,6 +1,22 @@
 import itertools
 
 
+def dash(n):
+    return "-" * n
+
+
+def bar_dash(n):
+    return '|' + "-" * n + '|'
+
+
+def between_dash(n, s):
+    return f'{dash(n)} {s} {dash(n)}'
+
+
+def between_bar_dash(n, s):
+    return f'{bar_dash(n)} {s} {bar_dash(n)}'
+
+
 def print_title(title, level=1):
     '''
     Title formatter for printing in terminal
@@ -21,16 +37,22 @@ def print_title(title, level=1):
 
     '''
 
-    title_formats = {
-        0: '\n{title}',
-        1: '\n{5*"-"} {title} {5*"-"}',
-        2: '\n|{20*"-"}| {upper(log)} |{20*"-"}|',
-        3: '\n|{(44 + len(log))* "-"}|'
-        '\n|{20*"-"}| {upper(log)} |{20*"-"}|'
-        '\n|{(44 + len(log))* "-"}|',
-    }
-
-    print(title_formats[level].format(title))
+    if level == 0:
+        print(f'\n{title}')
+    elif level == 1:
+        print(f'\n{between_dash(5,title)}')
+    elif level == 2:
+        print(f'\n|{between_bar_dash(upper())}|')
+    elif level == 3:
+        print(
+            (
+                f'\n|{(44 + len(title))* "-"}|'
+                f'\n|{20*"-"}| {upper(title)} |{20*"-"}|'
+                f'\n|{(44 + len(title))* "-"}|'
+            )
+        )
+    else:
+        raise ValueError
 
 
 def print_table(data):

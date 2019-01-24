@@ -21,14 +21,20 @@ class Object_Viewer:
 
     def view(self):
         self.print_title()
-        attributes = self.get_attributes()
+        attributes = self.get_attributes_names()
         self.set_column_width(attributes)
         groups = self.group_attributes(attributes)
         for group in groups:
             self.view_group(group)
 
-    def get_attributes(self):
+    def get_attributes_names(self):
         return [a for a in dir(self.o) if self.is_viewed(a)]
+
+    def get_attribute(self, a):
+        try:
+            return getattr(self.o, a)
+        except (TypeError, AttributeError, ValueError):
+            return None
 
     def group_attributes(self, attributes):
         """split attributes into groups"""
@@ -37,7 +43,7 @@ class Object_Viewer:
         properties = Attribute_Group(attributes=[], name='properties')
         modules = Attribute_Group(attributes=[], name='modules')
         for a in attributes:
-            value = getattr(self.o, a, None)
+            value = self.get_attribute(a)
             if callable(value):
                 callables.attributes.append(a)
             elif ismodule(value):
@@ -69,9 +75,8 @@ class Object_Viewer:
             self.print(f'\n---| {group.name}\n')
 
     def print_attribute(self, a):
-        try:
-            attr = getattr(self.o, a)
-        except AttributeError:
+        attr = self.get_attribute(a)
+        if attr is None:
             print(f'{a:{self.first_column_width}} : ...')
             return
         if callable(attr):

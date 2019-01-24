@@ -19,8 +19,9 @@ debug_print_filename = os.environ.get("DEBUG_LOG_FILE")
 debug_print_file = unbuffered_file(debug_print_filename)
 
 
+# print to debug file
 fprint = print_factory(debug_print_file)
-
+fprint('-' * 30 + '\n' * 5)
 
 ic_config = {"prefix": ""}
 ic.configureOutput(**ic_config)
@@ -31,4 +32,5 @@ def ic_log_to_file():
     ic.configureOutput(**ic_config)
 
 
+# a printer with indentation
 p = Printer()

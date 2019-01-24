@@ -41,12 +41,17 @@ def load_json(path):
 
 
 def write_to_file(s, path):
+    """write a string to a file
+    """
+
     file = Path(path).resolve()
     file.write_text(s)
     print(f'written {len(s)} chars to {file}')
 
 
 def read_from_file(path):
+    """read a file content
+    """
     file = Path(path).resolve()
     s = file.read_text()
     print(f'read {len(s)} chars to {file}')
