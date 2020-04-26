@@ -4,12 +4,12 @@ from inspect import ismodule
 
 from sqlalchemy import inspect
 
-Attribute_Group = namedtuple('Attribute_Group', ['attributes', 'name'])
+Attribute_Group = namedtuple("Attribute_Group", ["attributes", "name"])
 
 
 def doc_header(o):
     try:
-        return o.__doc__.split('\n')[0]
+        return o.__doc__.split("\n")[0]
     except (AttributeError):
         return None
 
@@ -39,9 +39,9 @@ class Object_Viewer:
     def group_attributes(self, attributes):
         """split attributes into groups"""
 
-        callables = Attribute_Group(attributes=[], name='callables')
-        properties = Attribute_Group(attributes=[], name='properties')
-        modules = Attribute_Group(attributes=[], name='modules')
+        callables = Attribute_Group(attributes=[], name="callables")
+        properties = Attribute_Group(attributes=[], name="properties")
+        modules = Attribute_Group(attributes=[], name="modules")
         for a in attributes:
             value = self.get_attribute(a)
             if callable(value):
@@ -60,7 +60,7 @@ class Object_Viewer:
             self.print_attribute(a)
 
     def is_viewed(self, a):
-        return not a[0] == '_'
+        return not a[0] == "_"
 
     # -------------------printers-----------------------
 
@@ -68,56 +68,31 @@ class Object_Viewer:
         self.first_column_width = max([len(name) for name in attributes])
 
     def print_title(self):
-        self.print(f'type : {type(self.o)}')
+        self.print(f"type : {type(self.o)}")
 
     def print_group_title(self, group):
         if group.name:
-            self.print(f'\n---| {group.name}\n')
+            self.print(f"\n---| {group.name}\n")
 
     def print_attribute(self, a):
         attr = self.get_attribute(a)
         if attr is None:
-            print(f'{a:{self.first_column_width}} : ...')
+            print(f"{a:{self.first_column_width}} : ...")
             return
         if callable(attr):
-            formatted = f'{a}()'
-            self.print(f'{formatted:{self.first_column_width}} : {doc_header(attr)}')
+            formatted = f"{a}()"
+            self.print(f"{formatted:{self.first_column_width}} : {doc_header(attr)}")
         else:
             type_ = type(attr)
             base_types = [int, bool, type(None), dict, frozenset, str, list, tuple]
             if type_ in base_types:
-                type_info = ''
+                type_info = ""
             else:
                 type_info = type_
             attr_str = str(attr)
             if len(attr_str) > 40:
-                attr_str = f'{attr_str[:20]}...      ({len(attr_str)})'
-            self.print(f'{a:{self.first_column_width}} : {attr_str} {type_info}')
-
-
-def format_logger(l):
-    info = []
-    info.append(f'logger : {l.name}({logging.getLevelName(l.level)})')
-    if l.propagate:
-        info.append(f'propagate to : {l.parent!r}')
-    else:
-        info.append('no propagation')
-    for handler in l.handlers:
-        info.append(f'handler : {handler.__class__.__name__}')
-    return '\n'.join(info)
-
-
-def view_model(model):
-    mapper = inspect(model)
-    print(mapper.class_)
-    print()
-    print('---| relationships')
-    for r in mapper.relationships.keys():
-        print(r)
-    print()
-    print('---| properties')
-    for p in mapper.column_attrs:
-        print(f'{p.key}')
+                attr_str = f"{attr_str[:20]}...      ({len(attr_str)})"
+            self.print(f"{a:{self.first_column_width}} : {attr_str} {type_info}")
 
 
 # -----------------------------------------------
