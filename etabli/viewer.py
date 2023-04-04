@@ -2,7 +2,6 @@ import logging
 from collections import namedtuple
 from inspect import ismodule
 
-from sqlalchemy import inspect
 
 Attribute_Group = namedtuple("Attribute_Group", ["attributes", "name"])
 
