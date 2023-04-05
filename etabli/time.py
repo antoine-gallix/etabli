@@ -1,12 +1,5 @@
-"""tools for measuring time
-"""
-
-
 def timer(f):
-    '''
-    decorator to print execution time of a function
-    :param f:
-    '''
+    """decorator to print execution time of a function"""
 
     def timedFunction(*args, **kwargs):
         t0 = time()
