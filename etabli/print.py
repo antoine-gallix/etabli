@@ -1,9 +1,7 @@
 import logging
 import os
-from pprint import pformat, pprint
-
 from pathlib import Path
-
+from pprint import pformat, pprint
 
 # -----------------------------------------------
 
@@ -24,8 +22,7 @@ class File_Writer:
 
 
 def file_logger_factory(file, name):
-    """Create a logger that writes to a file
-    """
+    """Create a logger that writes to a file"""
     formatter = logging.Formatter("%(message)s")
 
     handler = logging.FileHandler(file, mode="w")
@@ -40,8 +37,8 @@ def file_logger_factory(file, name):
 
 def arguments():
     """Returns tuple containing dictionary of calling function's
-       named arguments and a list of calling function's unnamed
-       positional arguments.
+    named arguments and a list of calling function's unnamed
+    positional arguments.
     """
     from inspect import getargvalues, stack
 
@@ -57,12 +54,12 @@ def status():
     print(fargs["kwargs"])
 
 
-def print_factory(file):
+def file_printer(file):
     "Create functions that print to a file"
 
     def print_to_file(s=None):
         if s is None:
-            to_print = ''
+            to_print = ""
         elif isinstance(s, str):
             to_print = s
         else:
@@ -78,6 +75,8 @@ def print_at_level(s, n):
 
 
 class Printer:
+    """Printer with indentation and listing"""
+
     def __init__(self):
         self._indent = 0
 
@@ -97,7 +96,7 @@ class Printer:
         self._indent = 0
 
     def print(self, s, prefix=None):
-        prefix = prefix or ''
+        prefix = prefix or ""
         print(f'{" "*4*self._indent}{prefix}{str(s)}')
 
     def iter(self, iterable, **kwargs):
