@@ -11,9 +11,9 @@ from dev_tools import *
 ```
 
 ## installation 
-'''
+```
 pip install 'etabli @ git+https://github.com/antoine-gallix/etabli.git'
-'''
+```
 
 
 ## mira
