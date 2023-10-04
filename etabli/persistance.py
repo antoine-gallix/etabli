@@ -1,8 +1,10 @@
 import json
 import pickle
-from os.path import isfile, split
 from pathlib import Path
-from pprint import pprint
+
+
+def expand_path(path):
+    return Path(path).expanduser().resolve(strict=True)
 
 # ---------------------pickle---------------------
 
@@ -10,14 +12,14 @@ from pprint import pprint
 def dump_pickle(thing, path):
     """a pickle wrapper
     """
-    output_path = Path(path).expanduser()
+    output_path = expand_path(path)
     output_path.parent.mkdir(exist_ok=True,parents=True)
     output_path.write_bytes(pickle.dumps(thing))
     print(f"saved pickle to '{output_path}'")
 
 
 def load_pickle(path):
-    input_path = Path(path).expanduser()
+    input_path = expand_path(path)
     thing = pickle.loads(input_path.read_bytes())
     print(f"loaded pickle from '{input_path}'")
     return thing
@@ -27,10 +29,10 @@ def load_pickle(path):
 
 
 def load_json(path):
-    input = Path(path)
+    input = expand_path(path)
     print(f'loading json from {path}')
     try:
-        thing = json.loads(input.resolve().read_text())
+        thing = json.loads(input.read_text())
     except json.decoder.JSONDecodeError as e:
         print('error while loading json')
     return thing
@@ -43,7 +45,7 @@ def write_to_file(s, path):
     """write a string to a file
     """
 
-    file = Path(path).resolve()
+    file = expand_path(path)
     file.write_text(s)
     print(f'written {len(s)} chars to {file}')
 
@@ -51,7 +53,7 @@ def write_to_file(s, path):
 def read_from_file(path):
     """read a file content
     """
-    file = Path(path).resolve()
+    file = expand_path(path)
     s = file.read_text()
     print(f'read {len(s)} chars to {file}')
     return s
