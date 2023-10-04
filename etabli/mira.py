@@ -1,4 +1,3 @@
-from sieve import Sieve
 from functools import partial
 
 
