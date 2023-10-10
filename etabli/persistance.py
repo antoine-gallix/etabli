@@ -4,16 +4,17 @@ from pathlib import Path
 
 
 def expand_path(path):
-    return Path(path).expanduser().resolve(strict=True)
+    """Expand path to full form"""
+    return Path(path).expanduser().resolve()
+
 
 # ---------------------pickle---------------------
 
 
 def dump_pickle(thing, path):
-    """a pickle wrapper
-    """
+    """a pickle wrapper"""
     output_path = expand_path(path)
-    output_path.parent.mkdir(exist_ok=True,parents=True)
+    output_path.parent.mkdir(exist_ok=True, parents=True)
     output_path.write_bytes(pickle.dumps(thing))
     print(f"saved pickle to '{output_path}'")
 
@@ -30,30 +31,28 @@ def load_pickle(path):
 
 def load_json(path):
     input = expand_path(path)
-    print(f'loading json from {path}')
+    print(f"loading json data from {path}")
     try:
-        thing = json.loads(input.read_text())
+        return json.loads(input.read_text())
     except json.decoder.JSONDecodeError as e:
-        print('error while loading json')
-    return thing
+        print(f"error while loading file: {e}")
+        raise
 
 
 # ---------------------write to file---------------------
 
 
 def write_to_file(s, path):
-    """write a string to a file
-    """
+    """write a string to a file"""
 
     file = expand_path(path)
     file.write_text(s)
-    print(f'written {len(s)} chars to {file}')
+    print(f"written {len(s)} chars to {file}")
 
 
 def read_from_file(path):
-    """read a file content
-    """
+    """read a file content"""
     file = expand_path(path)
     s = file.read_text()
-    print(f'read {len(s)} chars to {file}')
+    print(f"read {len(s)} chars to {file}")
     return s
