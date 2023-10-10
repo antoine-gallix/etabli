@@ -7,8 +7,14 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+click = "^8.1.7"
+rich = "^13.6.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+etabli-print-var-file = "scripts.print_variable_file:print_variable_file"
