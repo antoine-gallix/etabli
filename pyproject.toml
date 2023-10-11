@@ -17,4 +17,4 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry.scripts]
-etabli-print-var-file = "scripts.print_variable_file:print_variable_file"
+etabli = "scripts.cli:main"
