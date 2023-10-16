@@ -1,7 +1,8 @@
 import click
-import etabli.persistance
 import IPython
 import rich
+
+import etabli.persistance
 
 main = click.Group()
 
@@ -23,3 +24,10 @@ def explore_variable_file(file):
         "print(var)",
     ]
     os.execvp("ipython", ["ipython", "-i", "-c", ";".join(command)])
+
+
+@main.command
+def replay_call():
+    import os
+
+    os.execvp("ipython", ["ipython", "-i", "-m", "etabli.replay"])

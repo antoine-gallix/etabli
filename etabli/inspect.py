@@ -23,7 +23,7 @@ def print_call(func):
         kwargs_string = ",".join(f"{k}={repr(v)}" for k, v in kwargs.items())
 
         result = func(*args, **kwargs)
-        print(f"{func.__name__}({args_string},{kwargs_string}) -> {result}")
+        print(f"{func.__name__}({args_string!r},{kwargs_string!r}) -> {result!r}")
         return result
 
     return wrapped
@@ -32,12 +32,12 @@ def print_call(func):
 def save_call(func):
     @wraps(func)
     def wrapped(*args, save_replay=True, **kwargs):
-        ret = func(*args, **kwargs)
         if save_replay:
             replay = (func.__module__, func.__name__, args, kwargs)
             dump_pickle(replay, "replay.pkl")
             logger.critical("function call saved, aborting everything")
             sys.exit()
-        return ret
+        return func(*args, **kwargs)
 
+    wrapped.has_replay = True
     return wrapped
