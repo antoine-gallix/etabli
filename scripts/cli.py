@@ -1,5 +1,4 @@
 import click
-import IPython
 import rich
 
 import etabli.persistance
@@ -14,16 +13,10 @@ def print_variable_file(file):
 
 
 @main.command
-@click.argument("file")
-def explore_variable_file(file):
+def explore_variable_file():
     import os
 
-    command = [
-        "import etabli.persistance",
-        f"var = etabli.persistance.load_pickle('{file}')",
-        "print(var)",
-    ]
-    os.execvp("ipython", ["ipython", "-i", "-c", ";".join(command)])
+    os.execvp("ipython", ["ipython", "-i", "-m", "etabli.explore"])
 
 
 @main.command
