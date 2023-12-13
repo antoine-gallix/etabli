@@ -3,6 +3,7 @@ import sys
 from functools import wraps
 from logging import getLogger
 
+import rich
 from rich import print
 
 from etabli.persistance import dump_pickle
@@ -22,9 +23,22 @@ def print_call(func):
         args_string = ",".join(repr(arg) for arg in args)
         kwargs_string = ",".join(f"{k}={repr(v)}" for k, v in kwargs.items())
 
+        print(f"{func.__name__}({args_string!r},{kwargs_string!r})")
         result = func(*args, **kwargs)
         print(f"{func.__name__}({args_string!r},{kwargs_string!r}) -> {result!r}")
         return result
+
+    return wrapped
+
+
+def inspect_exception(func):
+    @wraps(func)
+    def wrapped(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as exc:
+            rich.inspect(exc)
+            raise
 
     return wrapped
 
