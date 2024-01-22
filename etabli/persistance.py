@@ -1,9 +1,20 @@
+import datetime
 import json
 import pickle
 from pathlib import Path
 
 
-def expand_path(path):
+class TimestampEncoder(json.JSONEncoder):
+    """Convert datetime into iso strings"""
+
+    def default(self, o):
+        if isinstance(o, datetime.datetime):
+            return o.isoformat()
+        else:
+            return super().default(o)
+
+
+def expand_path(path) -> Path:
     """Expand path to full form"""
     return Path(path).expanduser().resolve()
 
