@@ -8,7 +8,7 @@ class TimestampEncoder(json.JSONEncoder):
     """Convert datetime into iso strings"""
 
     def default(self, o):
-        if isinstance(o, datetime.datetime):
+        if isinstance(o, (datetime.datetime, datetime.date, datetime.time)):
             return o.isoformat()
         else:
             return super().default(o)
