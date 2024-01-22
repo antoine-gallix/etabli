@@ -11,7 +11,7 @@ def expand_path(path):
 # ---------------------pickle---------------------
 
 
-def dump_pickle(thing, path):
+def dump_pickle(thing, path) -> None:
     """a pickle wrapper"""
     output_path = expand_path(path)
     output_path.parent.mkdir(exist_ok=True, parents=True)
@@ -30,7 +30,7 @@ def load_pickle(path):
 
 
 def load_json(path):
-    input = expand_path(path)
+    input: Path = expand_path(path)
     print(f"loading json data from {path}")
     try:
         return json.loads(input.read_text())
@@ -42,7 +42,7 @@ def load_json(path):
 # ---------------------write to file---------------------
 
 
-def write_to_file(s, path):
+def write_to_file(s, path) -> None:
     """write a string to a file"""
 
     file = expand_path(path)
@@ -50,7 +50,7 @@ def write_to_file(s, path):
     print(f"written {len(s)} chars to {file}")
 
 
-def read_from_file(path):
+def read_from_file(path) -> str:
     """read a file content"""
     file = expand_path(path)
     s = file.read_text()
