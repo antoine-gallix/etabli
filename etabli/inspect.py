@@ -3,6 +3,7 @@ import sys
 from functools import wraps
 from logging import getLogger
 
+import funcy
 import rich
 from rich import print
 
@@ -20,13 +21,16 @@ def print_call(func):
 
     @wraps(func)
     def wrapped(*args, **kwargs):
-        args_string = ",".join(repr(arg) for arg in args)
+        pargs_string = ",".join(repr(arg) for arg in args)
         kwargs_string = ",".join(f"{k}={repr(v)}" for k, v in kwargs.items())
-
-        print(f"{func.__name__}({args_string!r},{kwargs_string!r})")
-        result = func(*args, **kwargs)
-        print(f"{func.__name__}({args_string!r},{kwargs_string!r}) -> {result!r}")
-        return result
+        args_string = ",".join(funcy.keep((pargs_string, kwargs_string)))
+        try:
+            result = func(*args, **kwargs)
+            print(f"{func.__name__}({args_string}) -> {result!r}")
+            return result
+        except Exception as exc:
+            print(f"{func.__name__}({args_string}) ! {exc.__class__.__name__}:{exc}")
+            raise
 
     return wrapped
 
