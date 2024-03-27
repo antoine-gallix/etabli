@@ -2,6 +2,7 @@ import datetime
 import json
 import pickle
 from pathlib import Path
+import arrow
 
 
 class TimestampEncoder(json.JSONEncoder):
@@ -20,10 +21,13 @@ def expand_path(path) -> Path:
 
 
 # ---------------------pickle---------------------
+def default_dump(extension):
+    return f"etabli_dump_{arrow.utcnow().format('YYYYMMDDHHmmss')}.{extension}"
 
 
-def dump_pickle(thing, path) -> None:
+def dump_pickle(thing, path=None) -> None:
     """a pickle wrapper"""
+    path = path or default_dump("pkl")
     output_path = expand_path(path)
     output_path.parent.mkdir(exist_ok=True, parents=True)
     output_path.write_bytes(pickle.dumps(thing))
@@ -40,11 +44,19 @@ def load_pickle(path):
 # ---------------------json---------------------
 
 
+def dump_json(thing, path=None, encoder=None) -> None:
+    path = path or default_dump("json")
+    output_path: Path = expand_path(path)
+    output_path.parent.mkdir(exist_ok=True, parents=True)
+    output_path.write_text(json.dumps(thing, cls=encoder, indent=4))
+    print(f"saved json data to {path}")
+
+
 def load_json(path):
-    input: Path = expand_path(path)
-    print(f"loading json data from {path}")
+    full_path: Path = expand_path(path)
+    print(f"loading json data from {full_path}")
     try:
-        return json.loads(input.read_text())
+        return json.loads(full_path.read_text())
     except json.decoder.JSONDecodeError as e:
         print(f"error while loading file: {e}")
         raise
