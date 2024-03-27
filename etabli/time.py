@@ -1,3 +1,6 @@
+from time import time
+
+
 def timer(f):
     """decorator to print execution time of a function"""
 
