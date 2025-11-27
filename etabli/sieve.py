@@ -1,7 +1,3 @@
-from icecream import ic
-from functools import wraps
-
-
 # -------------------core----------------------------
 class Sieve:
     def __init__(self, function=None, name=None):

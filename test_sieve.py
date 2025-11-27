@@ -1,4 +1,4 @@
-from sieve import Sieve
+from etabli.sieve import Sieve
 
 
 def is_even(number):
@@ -25,7 +25,7 @@ def test__Sieve__empty():
 
 
 def test__Sieve__creation():
-    sieve = Sieve(is_even)
+    Sieve(is_even)
 
 
 def test__Sieve__repr():

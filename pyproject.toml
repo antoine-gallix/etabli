@@ -6,8 +6,8 @@ authors = [{ name = "Antoine Gallix", email = "antoine.gallix@a2ei.org" }]
 requires-python = ">=3.10,<4"
 readme = "README.md"
 dependencies = [
-    "click>=8.1.7,<9",
-    "rich>=13.6.0,<14",
+    "click",
+    "rich",
 ]
 
 [project.scripts]

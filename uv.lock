@@ -34,8 +34,8 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "click", specifier = ">=8.1.7,<9" },
-    { name = "rich", specifier = ">=13.6.0,<14" },
+    { name = "click" },
+    { name = "rich" },
 ]
 
 [[package]]
