@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: etabli
+Version: 0.2.0
+Author-email: Antoine Gallix <antoine.gallix@a2ei.org>
+Requires-Python: <4,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: rich
+Dynamic: license-file
+
+# etabli
+
+A set of tools for python development
+
+```python
+from dev_tools import *
+```
+
+## installation 
+
+```shell
+pip install 'etabli @ git+https://github.com/antoine-gallix/etabli.git'
+```
+
+
+## mira
+
+- support modules
+- column alignment
+- limit length of long values
+
