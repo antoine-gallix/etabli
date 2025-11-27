@@ -1,6 +1,6 @@
 [project]
 name = "etabli"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = [{ name = "Antoine Gallix", email = "antoine.gallix@a2ei.org" }]
 requires-python = ">=3.10,<4"
@@ -10,9 +10,3 @@ dependencies = [
     "rich",
 ]
 
-[project.scripts]
-etabli = "scripts.cli:main"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
