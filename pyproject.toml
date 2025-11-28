@@ -6,7 +6,10 @@ authors = [{ name = "Antoine Gallix", email = "antoine.gallix@a2ei.org" }]
 requires-python = ">=3.10,<4"
 readme = "README.md"
 dependencies = [
+    "arrow>=1.4.0",
     "click",
+    "funcy>=2.0",
+    "humanize>=4.14.0",
     "rich",
 ]
 
