@@ -1,6 +1,6 @@
 [project]
 name = "etabli"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = [{ name = "Antoine Gallix", email = "antoine.gallix@a2ei.org" }]
 requires-python = ">=3.10,<4"
